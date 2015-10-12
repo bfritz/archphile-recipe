@@ -1,5 +1,9 @@
 #!/bin/bash
 ######################Archphile Creation Script for Cubox-i############################
+
+# download location for supporting files
+FILES=https://raw.githubusercontent.com/archphile/recipe/master/files
+
 clear
 red='\e[0;31m'
 NC='\e[0m'
@@ -13,7 +17,7 @@ hostnamectl set-hostname archphile
 
 # /etc/motd text
 echo -e "${red}Downloading sample /etc/motd file...${NC}" 
-wget https://raw.githubusercontent.com/archphile/recipe/master/files/motd-cubox -O /etc/motd
+wget $FILES/motd-cubox -O /etc/motd
 nano /etc/motd
 
 # Changing DNS servers
@@ -50,7 +54,7 @@ EOF
 
 # Network Configuration
 echo -e "${red}Changing netctl network configuration...${NC}" 
-wget https://raw.githubusercontent.com/archphile/recipe/master/files/archphile-network -O /etc/netctl/archphile-network
+wget $FILES/archphile-network -O /etc/netctl/archphile-network
 systemctl disable systemd-networkd
 systemctl mask systemd-networkd
 netctl enable archphile-network
@@ -73,11 +77,11 @@ locale-gen
 echo "LANG="en_US.UTF-8"" > /etc/locale.conf
 rm /etc/localtime
 ln -s /usr/share/zoneinfo/Europe/Athens /etc/localtime
-wget https://raw.githubusercontent.com/archphile/recipe/master/files/ntp.conf -O /etc/ntp.conf
+wget $FILES/ntp.conf -O /etc/ntp.conf
 
 # /etc/fstab tweaking and linking .bash_history to /dev/null
 echo -e "${red}Changing fstab entries...${NC}" 
-wget https://raw.githubusercontent.com/archphile/recipe/master/files/fstab-cubox -O /etc/fstab
+wget $FILES/fstab-cubox -O /etc/fstab
 
 echo -e "${red}Linking .bash_history to /dev/null...${NC}" 
 rm /root/.bash_history
@@ -102,8 +106,8 @@ pacman -S mpd-archphile mpc ympd-archphile archphile-optimize upmpdcli-archphile
 # alternative method for wifi drivers installation
 #echo -e "${red}Installing wifi drivers...${NC}" 
 #pacman -Rcsn firmware-brcm43xx --noconfirm
-#wget https://raw.githubusercontent.com/archphile/recipe/master/files/cubox_wireless_firmware/brcmfmac4329-sdio.txt
-#wget https://raw.githubusercontent.com/archphile/recipe/master/files/cubox_wireless_firmware/brcmfmac4330-sdio.txt
+#wget $FILES/cubox_wireless_firmware/brcmfmac4329-sdio.txt
+#wget $FILES/cubox_wireless_firmware/brcmfmac4330-sdio.txt
 #mv brcmfmac4329-sdio.txt /usr/lib/firmware/brcm/
 #mv brcmfmac4330-sdio.txt /usr/lib/firmware/brcm/
 
@@ -121,12 +125,12 @@ pacman -Scc
 
 # Fetching mpd.conf for cubox-i
 echo -e "${red}Fetching mpd.conf for cubox-i...${NC}" 
-wget https://raw.githubusercontent.com/archphile/recipe/master/files/mpd.conf-cubox -O /etc/mpd.conf
+wget $FILES/mpd.conf-cubox -O /etc/mpd.conf
 
 # Bypassing new User=mpd systemd configuration 
 echo -e "${red}Fetching user.conf in order to bypass User=mpd...${NC}" 
 mkdir /etc/systemd/system/mpd.service.d
-wget https://raw.githubusercontent.com/archphile/recipe/master/files/user.conf -O /etc/systemd/system/mpd.service.d/user.conf
+wget $FILES/user.conf -O /etc/systemd/system/mpd.service.d/user.conf
 
 # Setting multi-user.target as the new default target
 echo -e "${red}Setting default systemd target...${NC}" 
@@ -143,7 +147,7 @@ systemctl enable avahi-daemon
 echo -e "${red}Creating directories needed by MPD and downloading webradios...${NC}" 
 mkdir /mnt/nas-nfs
 mkdir /mnt/nas-samba
-wget https://github.com/archphile/recipe/raw/master/files/webradio.tar.gz
+wget $FILES/webradio.tar.gz
 tar xvfz webradio.tar.gz
 mv webradio /mnt/
 chown -R root:root /mnt/webradio
@@ -174,12 +178,12 @@ EOF
 
 # udevil configuration
 echo -e "${red}Creating udevil configuration and enabling devmon service...${NC}" 
-wget https://raw.githubusercontent.com/archphile/recipe/master/files/udevil.conf -O /etc/udevil/udevil.conf
+wget $FILES/udevil.conf -O /etc/udevil/udevil.conf
 systemctl enable devmon@root
 
 ## limits.conf configuration
 #echo -e "${red}Changing /etc/security/limits.conf configuration...${NC}" 
-#https://raw.githubusercontent.com/archphile/recipe/master/files/limits.conf
+#$FILES/limits.conf
 #mv limits.conf /etc/security/limits.conf
 
 # journald.conf configuration and /var/log deletion
@@ -220,9 +224,9 @@ ln -s /var/lib/mpd/music /var/www/Music
 # disks spin-down configuration
 echo -e "${red}Fetching udev rules for hdparm...${NC}" 
 mkdir /opt/archphile
-wget https://raw.githubusercontent.com/archphile/recipe/master/files/50-hdparm.rules-onedisk -O /opt/archphile/50-hdparm.rules-onedisk
-wget https://raw.githubusercontent.com/archphile/recipe/master/files/50-hdparm.rules-manydisks -O /opt/archphile/50-hdparm.rules-manydisks
-wget https://raw.githubusercontent.com/archphile/recipe/master/files/hd-idle -O /etc/conf.d/hd-idle
+wget $FILES/50-hdparm.rules-onedisk -O /opt/archphile/50-hdparm.rules-onedisk
+wget $FILES/50-hdparm.rules-manydisks -O /opt/archphile/50-hdparm.rules-manydisks
+wget $FILES/hd-idle -O /etc/conf.d/hd-idle
 
 # system cleanup
 echo -e "${red}Cleaning up system...${NC}" 
