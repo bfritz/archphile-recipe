@@ -82,19 +82,17 @@ ln -sf /dev/null ~/.bash_history
 # Adding Archphile repository and installing needed packages
 echo -e "${red}Adding Archphile Repository...${NC}" 
 cat >> /etc/pacman.conf <<"EOF"
-#[arm7-testing]
-#SigLevel = Never
-#Server = http://archphile.org/repo/arm7-testing
-
 [archphile]
 SigLevel = Never
-Server = http://archphile.org/repo/arm7
+#Server = http://archphile.org/repo/arm
+Server = file://__PKGDIR__
 EOF
+
+sed -i "s/__PKGDIR__/${PKGDIR}/" /etc/pacman.conf
 
 echo -e "${red}Updating system and installing needed packages...${NC}" 
 pacman -Syu --noconfirm
-pacman -S mpc alsa-utils cifs-utils nfs-utils udevil ntfs-3g htop avahi dhcpcd hd-idle --noconfirm
-pacman -U ${PKGDIR}/*-{any,arm}.pkg.tar.xz --noconfirm
+pacman -S mpd-archphile mpc ympd-archphile archphile-optimize upmpdcli-archphile shairport-archphile alsa-utils cifs-utils nfs-utils udevil ntfs-3g htop avahi dhcpcd mongoose hd-idle --noconfirm
 
 # alternative method for wifi drivers installation
 #echo -e "${red}Installing wifi drivers...${NC}" 
