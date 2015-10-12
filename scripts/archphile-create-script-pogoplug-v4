@@ -4,6 +4,9 @@
 # download location for supporting files
 FILES=https://raw.githubusercontent.com/archphile/recipe/master/files
 
+# directory where archphile packages for Pogoplug Series 4 are stored
+PKGDIR=/home/alarm/archphile/pkgs
+
 clear
 red='\e[0;31m'
 NC='\e[0m'
@@ -39,17 +42,6 @@ echo "nohook resolv.conf" >>/etc/dhcpcd.conf
 # Disabling various modules
 echo -e "${red}Disabling various modules...${NC}" 
 cat > /etc/modprobe.d/blacklist.conf <<"EOF"
-blacklist gpio_ir_recv
-blacklist ir_sony_decoder
-blacklist ir_rc6_decoder
-blacklist ir_rc5_sz_decoder
-blacklist ir_rc5_decoder
-blacklist ir_nec_decoder
-blacklist ir_jvc_decoder
-blacklist ir_lirc_codec
-blacklist lirc_dev
-blacklist ir_lirc_codec
-blacklist rpcsec_gss_krb5
 EOF
 
 # Network Configuration
@@ -101,7 +93,8 @@ EOF
 
 echo -e "${red}Updating system and installing needed packages...${NC}" 
 pacman -Syu --noconfirm
-pacman -S mpd-archphile mpc ympd-archphile archphile-optimize upmpdcli-archphile shairport-archphile alsa-utils cifs-utils nfs-utils udevil ntfs-3g htop avahi wpa_supplicant wireless_tools iw dhcpcd firmware-brcm43xx mongoose hd-idle --noconfirm
+pacman -S mpc alsa-utils cifs-utils nfs-utils udevil ntfs-3g htop avahi dhcpcd hd-idle --noconfirm
+pacman -U ${PKGDIR}/*-{any,arm}.pkg.tar.xz --noconfirm
 
 # alternative method for wifi drivers installation
 #echo -e "${red}Installing wifi drivers...${NC}" 
