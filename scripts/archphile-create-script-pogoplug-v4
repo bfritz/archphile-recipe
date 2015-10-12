@@ -1,5 +1,5 @@
 #!/bin/bash
-######################Archphile Creation Script for Cubox-i############################
+######################Archphile Creation Script for Pogoplug Series 4############################
 
 # download location for supporting files
 FILES=https://raw.githubusercontent.com/archphile/recipe/master/files
@@ -17,7 +17,7 @@ hostnamectl set-hostname archphile
 
 # /etc/motd text
 echo -e "${red}Downloading sample /etc/motd file...${NC}" 
-wget $FILES/motd-cubox -O /etc/motd
+wget $FILES/motd-pogoplug-v4 -O /etc/motd
 nano /etc/motd
 
 # Changing DNS servers
@@ -81,7 +81,7 @@ wget $FILES/ntp.conf -O /etc/ntp.conf
 
 # /etc/fstab tweaking and linking .bash_history to /dev/null
 echo -e "${red}Changing fstab entries...${NC}" 
-wget $FILES/fstab-cubox -O /etc/fstab
+wget $FILES/fstab-pogoplug-v4 -O /etc/fstab
 
 echo -e "${red}Linking .bash_history to /dev/null...${NC}" 
 rm /root/.bash_history
@@ -123,9 +123,9 @@ systemctl disable cronie
 systemctl mask cronie
 pacman -Scc
 
-# Fetching mpd.conf for cubox-i
-echo -e "${red}Fetching mpd.conf for cubox-i...${NC}" 
-wget $FILES/mpd.conf-cubox -O /etc/mpd.conf
+# Fetching mpd.conf for pogoplug-v4
+echo -e "${red}Fetching mpd.conf for pogoplug-v4...${NC}"
+wget $FILES/mpd.conf-pogoplug-v4 -O /etc/mpd.conf
 
 # Bypassing new User=mpd systemd configuration 
 echo -e "${red}Fetching user.conf in order to bypass User=mpd...${NC}" 
