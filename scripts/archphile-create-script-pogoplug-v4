@@ -139,8 +139,7 @@ echo -e "${red}Creating directories needed by MPD and downloading webradios...${
 mkdir /mnt/nas-nfs
 mkdir /mnt/nas-samba
 wget $FILES/webradio.tar.gz
-tar xvfz webradio.tar.gz
-mv webradio /mnt/
+tar xvfz webradio.tar.gz -C /mnt
 chown -R root:root /mnt/webradio
 rm webradio.tar.gz
 mkdir /mnt/usb-disk
